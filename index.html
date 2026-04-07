@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>上海灘之夜 · Shanghai Night — Louis Jadot Wine Dinner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Noto+Serif+TC:wght@300;400;500&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --gold-dark: #8B6914;
+    --crimson: #8B1A1A;
+    --ink: #0D0A07;
+    --ink2: #140f08;
+    --cream: #F5EDD8;
+    --cream-dim: rgba(245,237,216,0.6);
+    --border: rgba(201,168,76,0.22);
+    --border-bright: rgba(201,168,76,0.5);
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--ink);
+    background-image:
+      radial-gradient(ellipse 80% 60% at 15% 40%, rgba(139,26,26,0.13) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 85% 15%, rgba(201,168,76,0.07) 0%, transparent 55%),
+      url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23C9A84C' fill-opacity='0.025'%3E%3Cpath d='M40 0L42 38H80L48 58L60 96L40 72L20 96L32 58L0 38H38Z'/%3E%3C/g%3E%3C/svg%3E");
+    font-family: 'Noto Serif TC', serif;
+    color: var(--cream);
+    min-height: 100vh;
+  }
+
+  /* ── LAYOUT ── */
+  .page { max-width: 680px; margin: 0 auto; padding: 48px 20px 64px; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes shimmer {
+    0%,100% { opacity: 0.5; }
+    50%      { opacity: 1; }
+  }
+  .reveal { opacity: 0; animation: fadeUp 0.9s ease forwards; }
+  .reveal-1 { animation-delay: 0.1s; }
+  .reveal-2 { animation-delay: 0.25s; }
+  .reveal-3 { animation-delay: 0.4s; }
+  .reveal-4 { animation-delay: 0.55s; }
+  .reveal-5 { animation-delay: 0.7s; }
+
+  /* ── DIVIDER ── */
+  .divider {
+    display: flex; align-items: center; gap: 14px;
+    margin: 36px 0;
+  }
+  .divider::before, .divider::after {
+    content: ''; flex: 1; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0.45;
+  }
+  .divider-text {
+    font-family: 'IM Fell English', serif;
+    font-style: italic;
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 4px;
+    white-space: nowrap;
+    opacity: 0.85;
+  }
+
+  /* ── HERO HEADER ── */
+  .hero {
+    text-align: center;
+    padding: 0 0 4px;
+  }
+  .hero-eyebrow {
+    font-family: 'IM Fell English', serif;
+    font-style: italic;
+    font-size: 12px;
+    letter-spacing: 5px;
+    color: var(--gold);
+    opacity: 0.75;
+    margin-bottom: 14px;
+  }
+  .hero-title-en {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 9vw, 58px);
+    font-weight: 700;
+    line-height: 1.05;
+    color: var(--cream);
+    letter-spacing: -1px;
+    text-shadow: 0 4px 32px rgba(201,168,76,0.18);
+  }
+  .hero-title-zh {
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(14px, 3.5vw, 18px);
+    font-weight: 300;
+    letter-spacing: 8px;
+    color: var(--gold-light);
+    margin-top: 10px;
+    opacity: 0.9;
+  }
+  .hero-sub {
+    margin-top: 20px;
+    font-size: 13px;
+    line-height: 1.9;
+    color: var(--cream-dim);
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ── EVENT INFO GRID ── */
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+  .info-cell {
+    background: rgba(13,10,7,0.85);
+    padding: 16px 18px;
+  }
+  .info-cell.full { grid-column: 1 / -1; }
+  .info-key {
+    font-family: 'IM Fell English', serif;
+    font-style: italic;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    opacity: 0.7;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+  }
+  .info-val {
+    font-size: 13px;
+    color: var(--cream);
+    line-height: 1.7;
+  }
+
+  /* ── MENU ACCORDION ── */
+  .accordion {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .accordion-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    cursor: pointer;
+    background: rgba(201,168,76,0.04);
+    transition: background 0.25s;
+    user-select: none;
+  }
+  .accordion-header:hover { background: rgba(201,168,76,0.08); }
+  .accordion-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    color: var(--gold);
+    letter-spacing: 2px;
+  }
+  .accordion-arrow {
+    font-size: 11px;
+    color: var(--gold);
+    opacity: 0.6;
+    transition: transform 0.3s;
+  }
+  .accordion-arrow.open { transform: rotate(180deg); }
+  .accordion-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+  }
+  .accordion-body.open { max-height: 1200px; }
+  .menu-list { padding: 20px 24px; }
+  .menu-course {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .menu-course:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+  .menu-course-zh {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--cream);
+    margin-bottom: 2px;
+  }
+  .menu-course-en {
+    font-size: 12px;
+    color: var(--cream-dim);
+    margin-bottom: 6px;
+  }
+  .menu-wine {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 12px;
+    color: var(--gold-light);
+    opacity: 0.85;
+  }
+
+  /* ── PRICING ── */
+  .pricing-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .price-box {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 18px 20px;
+    transition: opacity 0.4s, border-color 0.4s;
+    position: relative;
+    overflow: hidden;
+  }
+  .price-box::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .price-box.active { border-color: var(--gold-dark); }
+  .price-box.active::before { opacity: 1; }
+  .price-box.dimmed { opacity: 0.3; }
+  .price-tag-label {
+    font-family: 'IM Fell English', serif;
+    font-style: italic;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    opacity: 0.8;
+    margin-bottom: 6px;
+  }
+  .price-tag-amount {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    color: var(--cream);
+    font-weight: 700;
+    line-height: 1;
+  }
+  .price-tag-note {
+    font-size: 11px;
+    color: var(--cream-dim);
+    margin-top: 5px;
+  }
+  .price-badge {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 10px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+  }
+  .badge-green {
+    background: rgba(30,100,50,0.3);
+    border: 1px solid rgba(50,160,80,0.4);
+    color: #7de09a;
+  }
+  .badge-amber {
+    background: rgba(120,80,10,0.3);
+    border: 1px solid rgba(201,168,76,0.3);
+    color: var(--gold-light);
+  }
+
+  /* ── CALCULATOR ── */
+  .calc-box {
+    background: rgba(245,237,216,0.03);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 24px 24px 20px;
+  }
+  .calc-title {
+    font-family: 'IM Fell English', serif;
+    font-style: italic;
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    opacity: 0.8;
+    margin-bottom: 18px;
+  }
+  .guest-control {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 20px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .guest-label {
+    flex: 1;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--cream-dim);
+  }
+  .guest-stepper {
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+  .step-btn {
+    background: rgba(201,168,76,0.08);
+    border: none;
+    border-left: 1px solid var(--border);
+    color: var(--gold);
+    font-size: 18px;
+    width: 44px;
+    height: 46px;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .step-btn:hover { background: rgba(201,168,76,0.18); }
+  .step-btn:active { background: rgba(201,168,76,0.28); }
+  .guest-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: var(--cream);
+    width: 48px;
+    text-align: center;
+    font-weight: 700;
+  }
+  .calc-breakdown {
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+  }
+  .calc-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+    font-size: 13px;
+  }
+  .calc-row-label { color: var(--cream-dim); }
+  .calc-row-val { color: var(--cream); }
+  .calc-total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }
+  .calc-total-label {
+    font-family: 'IM Fell English', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--gold);
+    letter-spacing: 2px;
+  }
+  .calc-total-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    color: var(--gold-light);
+    font-weight: 700;
+  }
+
+  /* ── STATUS BANNER ── */
+  .status-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: 4px;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    margin-bottom: 24px;
+    transition: all 0.4s;
+  }
+  .status-banner.early {
+    background: rgba(30,100,50,0.15);
+    border: 1px solid rgba(50,160,80,0.25);
+    color: #7de09a;
+  }
+  .status-banner.full {
+    background: rgba(160,110,10,0.15);
+    border: 1px solid rgba(201,168,76,0.25);
+    color: var(--gold-light);
+  }
+  .status-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    animation: shimmer 2s ease-in-out infinite;
+  }
+  .status-dot.green { background: #4ade80; }
+  .status-dot.amber { background: var(--gold); }
+
+  /* ── FORM ── */
+  .form-card {
+    background: rgba(245,237,216,0.03);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .form-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .form-section-title {
+    font-family: 'IM Fell English', serif;
+    font-style: italic;
+    font-size: 13px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-align: center;
+    margin-bottom: 26px;
+    opacity: 0.9;
+  }
+  .field { margin-bottom: 20px; }
+  .field label {
+    display: block;
+    font-family: 'IM Fell English', serif;
+    font-style: italic;
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.75;
+    margin-bottom: 8px;
+  }
+  .field input[type="text"],
+  .field input[type="tel"],
+  .field input[type="email"],
+  .field input[type="number"] {
+    width: 100%;
+    background: rgba(245,237,216,0.05);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    color: var(--cream);
+    font-family: 'Noto Serif TC', serif;
+    font-size: 14px;
+    padding: 12px 16px;
+    outline: none;
+    transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
+    -webkit-appearance: none;
+  }
+  .field input:focus {
+    border-color: rgba(201,168,76,0.6);
+    background: rgba(201,168,76,0.07);
+    box-shadow: 0 0 0 3px rgba(201,168,76,0.08);
+  }
+  .field input::placeholder { color: rgba(245,237,216,0.25); font-size: 13px; }
+
+  /* Upload */
+  .upload-zone {
+    border: 1px dashed rgba(201,168,76,0.3);
+    border-radius: 3px;
+    padding: 30px 20px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    transition: border-color 0.25s, background 0.25s;
+    background: rgba(245,237,216,0.02);
+  }
+  .upload-zone:hover, .upload-zone.drag-over {
+    border-color: rgba(201,168,76,0.65);
+    background: rgba(201,168,76,0.06);
+  }
+  .upload-zone input[type="file"] {
+    position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+  }
+  .upload-icon { font-size: 26px; margin-bottom: 8px; opacity: 0.65; }
+  .upload-text { font-size: 13px; color: var(--cream); opacity: 0.65; margin-bottom: 4px; }
+  .upload-hint { font-size: 11px; color: var(--gold); opacity: 0.55; letter-spacing: 1px; }
+  .file-name {
+    display: none;
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--gold);
+  }
+
+  /* Total summary in form */
+  .form-total {
+    background: rgba(201,168,76,0.06);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 3px;
+    padding: 14px 18px;
+    margin-bottom: 24px;
+    font-size: 13px;
+    color: var(--cream-dim);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .form-total strong {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: var(--gold-light);
+  }
+
+  /* Submit */
+  .submit-btn {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, #6b4f0a, var(--gold), #6b4f0a);
+    background-size: 200% 100%;
+    border: none;
+    border-radius: 3px;
+    color: var(--ink);
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    cursor: pointer;
+    transition: background-position 0.4s, box-shadow 0.3s, transform 0.15s;
+  }
+  .submit-btn:hover {
+    background-position: right center;
+    box-shadow: 0 6px 24px rgba(201,168,76,0.3);
+    transform: translateY(-1px);
+  }
+  .submit-btn:active { transform: translateY(0); }
+
+  /* Success */
+  .success-screen {
+    display: none;
+    text-align: center;
+    padding: 48px 24px;
+    animation: fadeUp 0.7s ease both;
+  }
+  .success-icon { font-size: 44px; margin-bottom: 16px; }
+  .success-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+  .success-body {
+    font-size: 14px;
+    color: var(--cream-dim);
+    line-height: 1.9;
+  }
+
+  /* Footer */
+  .page-footer {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 11px;
+    color: var(--cream);
+    opacity: 0.25;
+    letter-spacing: 2px;
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero reveal reveal-1">
+    <div class="hero-eyebrow">Pinotera Wines & Spirits · 尊貴晚宴邀請</div>
+    <div class="hero-title-en">Shanghai Night</div>
+    <div class="hero-title-zh">上 海 灘 之 夜</div>
+    <p class="hero-sub">一夜回到舊上海，燈影流轉，風華再現。粵式佳餚配上布根地名莊 Louis Jadot 佳釀，帶你穿越時代，感受紙醉金迷的優雅氛圍。</p>
+  </div>
+
+  <div class="divider reveal reveal-2"><span class="divider-text">✦ 活動詳情 · Event Details ✦</span></div>
+
+  <!-- EVENT INFO -->
+  <div class="info-grid reveal reveal-2">
+    <div class="info-cell">
+      <div class="info-key">Date · 日期</div>
+      <div class="info-val">2026年5月15日（五）</div>
+    </div>
+    <div class="info-cell">
+      <div class="info-key">Venue · 地點</div>
+      <div class="info-val">中國會 · 圖書館<br><small style="opacity:0.65;font-size:11px;">The China Club · The Library, 中環</small></div>
+    </div>
+    <div class="info-cell">
+      <div class="info-key">Arrival · 恭候</div>
+      <div class="info-val">7:00 PM</div>
+    </div>
+    <div class="info-cell">
+      <div class="info-key">Dinner · 入席</div>
+      <div class="info-val">8:00 PM</div>
+    </div>
+    <div class="info-cell full">
+      <div class="info-key">Dress Code · 著裝</div>
+      <div class="info-val">上海灘風華 · 旗袍 / 復古紳士 / 正裝 — 盛裝出席將安排專業攝影留念</div>
+    </div>
+  </div>
+
+  <div class="divider reveal reveal-3"><span class="divider-text">✦ 晚宴菜單 · Dinner Menu ✦</span></div>
+
+  <!-- MENU ACCORDION -->
+  <div class="accordion reveal reveal-3">
+    <div class="accordion-header" onclick="toggleMenu()">
+      <span class="accordion-title">The Library · Louis Jadot Wine Dinner</span>
+      <span class="accordion-arrow" id="menuArrow">▼</span>
+    </div>
+    <div class="accordion-body" id="menuBody">
+      <div class="menu-list">
+        <div class="menu-course">
+          <div class="menu-course-zh">前菜蝦三弄 · Shrimp Appetizers</div>
+          <div class="menu-course-en">紅酒糟河蝦仁 / 蝦皇戈滄 / 合浦珠環</div>
+          <div class="menu-wine">Champagne Roger Coulon Extra-Brut 1er Cru 'Heri-Hodie' NV</div>
+        </div>
+        <div class="menu-course">
+          <div class="menu-course-zh">手撕漫手乳豬</div>
+          <div class="menu-course-en">Roasted Suckling Pig</div>
+          <div class="menu-wine">Champagne Roger Coulon Extra-Brut 1er Cru 'Heri-Hodie' NV</div>
+        </div>
+        <div class="menu-course">
+          <div class="menu-course-zh">炸釀鮮蟹蓋</div>
+          <div class="menu-course-en">Deep-fried Stuffed Crab Shell</div>
+          <div class="menu-wine">Louis Jadot Chablis Fourchaumes 1er Cru 2023</div>
+        </div>
+        <div class="menu-course">
+          <div class="menu-course-zh">沙薑黑皮雞棕菌煎焗斑塊</div>
+          <div class="menu-course-en">Panfried Grouper Nuggets with Black Termite Mushroom, Flavored with Galangal</div>
+          <div class="menu-wine">Louis Jadot Meursault 2023</div>
+        </div>
+        <div class="menu-course">
+          <div class="menu-course-zh">秘製蔥油燒雞</div>
+          <div class="menu-course-en">Roasted Chicken Flavored with Shallots and Spring Onion</div>
+          <div class="menu-wine">Louis Jadot Chassagne-Montrachet 2023</div>
+        </div>
+        <div class="menu-course">
+          <div class="menu-course-zh">富貴石榴球伴蘭花台</div>
+          <div class="menu-course-en">Steamed Egg White Ball Stuffed with Scallop, Chicken, Arrowroot, Carrot and Mushroom with Broccolini</div>
+          <div class="menu-wine">Louis Jadot Pommard 2021</div>
+        </div>
+        <div class="menu-course">
+          <div class="menu-course-zh">陳香荷包梅菜扣肉飯</div>
+          <div class="menu-course-en">Steamed Rice with Pork Belly and Preserved Vegetable Wrapped in Lotus Leaf</div>
+          <div class="menu-wine">Louis Jadot Gevrey-Chambertin 2023</div>
+        </div>
+        <div class="menu-course">
+          <div class="menu-course-zh">中國會女兒紅雪糕 · 懷舊子薑皮蛋酥</div>
+          <div class="menu-course-en">Shaoxing Wine Gelato · Baked Puff with Preserved Egg and Young Ginger</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider reveal reveal-4"><span class="divider-text">✦ 票價 & 計算 · Pricing ✦</span></div>
+
+  <!-- STATUS BANNER -->
+  <div class="status-banner early reveal reveal-4" id="statusBanner">
+    <div class="status-dot green" id="statusDot"></div>
+    <span id="statusText">早鳥優惠進行中 — 4月10日前預訂可享 HK$1,680/位</span>
+  </div>
+
+  <!-- PRICING CARDS -->
+  <div class="pricing-row reveal reveal-4" style="margin-bottom:24px;">
+    <div class="price-box active" id="earlyBox">
+      <div class="price-tag-label">Early Bird · 早鳥</div>
+      <div class="price-tag-amount">$1,680</div>
+      <div class="price-tag-note">per person + 10% service charge</div>
+      <span class="price-badge badge-green">Before 10 Apr 2026</span>
+    </div>
+    <div class="price-box" id="fullBox">
+      <div class="price-tag-label">Regular · 正價</div>
+      <div class="price-tag-amount">$1,880</div>
+      <div class="price-tag-note">per person + 10% service charge</div>
+      <span class="price-badge badge-amber">After 10 Apr 2026</span>
+    </div>
+  </div>
+
+  <!-- CALCULATOR -->
+  <div class="calc-box reveal reveal-4">
+    <div class="calc-title">Number of Guests · 賓客人數</div>
+    <div class="guest-control">
+      <span class="guest-label">人數 / Guests</span>
+      <div class="guest-stepper">
+        <button class="step-btn" onclick="changeGuests(-1)">−</button>
+        <span class="guest-num" id="guestNum">2</span>
+        <button class="step-btn" onclick="changeGuests(1)">+</button>
+      </div>
+    </div>
+    <div class="calc-breakdown">
+      <div class="calc-row">
+        <span class="calc-row-label" id="calcPriceLine">HK$1,680 × 2 guests</span>
+        <span class="calc-row-val" id="calcSub">HK$3,360</span>
+      </div>
+      <div class="calc-row">
+        <span class="calc-row-label">Service charge (10%)</span>
+        <span class="calc-row-val" id="calcSvc">HK$336</span>
+      </div>
+      <div class="calc-total-row">
+        <span class="calc-total-label">Total · 合計</span>
+        <span class="calc-total-val" id="calcTotal">HK$3,696</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider reveal reveal-5"><span class="divider-text">✦ 立即預訂 · Reserve Now ✦</span></div>
+
+  <!-- REGISTRATION FORM -->
+  <div class="form-card reveal reveal-5" id="formCard">
+    <div class="form-section-title">Reserve Your Seat · 預留席位</div>
+
+    <div class="field">
+      <label>Full Name · 全名</label>
+      <input type="text" id="fname" placeholder="請輸入您的全名" />
+    </div>
+    <div class="field">
+      <label>Mobile · 手提電話</label>
+      <input type="tel" id="fmobile" placeholder="+852 XXXX XXXX" />
+    </div>
+    <div class="field">
+      <label>Email · 電郵地址</label>
+      <input type="email" id="femail" placeholder="your@email.com" />
+    </div>
+    <div class="field">
+      <label>Number of Guests · 賓客人數</label>
+      <input type="number" id="fguests" min="1" max="20" value="2" readonly style="cursor:default;" />
+    </div>
+
+    <div class="form-total">
+      <span id="formTotalLabel">2 guests · Early Bird</span>
+      <strong id="formTotalVal">HK$3,696</strong>
+    </div>
+
+    <div class="field">
+      <label>Bank-in Slip · 入數紙</label>
+      <div class="upload-zone" id="uploadZone">
+        <input type="file" id="fslip" accept="image/*,.pdf" onchange="handleFile(this)" />
+        <div class="upload-icon">🧾</div>
+        <div class="upload-text">點擊或拖拽上傳入數紙</div>
+        <div class="upload-hint">JPG · PNG · PDF accepted</div>
+        <div class="file-name" id="fileName">✓ <span id="fileNameText"></span></div>
+      </div>
+    </div>
+
+    <button class="submit-btn" onclick="submitForm()">確認預訂 · Confirm Reservation</button>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="success-screen" id="successScreen">
+    <div class="success-icon">🥂</div>
+    <div class="success-title">預訂成功！</div>
+    <p class="success-body">
+      感謝您的預訂，我們將盡快與您聯絡確認席位。<br>
+      Thank you — we'll be in touch to confirm your seat shortly.<br><br>
+      <em style="color:var(--gold);opacity:0.8;">敬候光臨，上海灘之夜 · 2026年5月15日</em>
+    </p>
+  </div>
+
+  <div class="page-footer">Pinotera Wines & Spirits · 品諾 · 限量席位 · By Invitation Only</div>
+</div>
+
+<script>
+  // ── CONFIG ──
+  const EARLY_PRICE = 1680;
+  const FULL_PRICE  = 1880;
+  const CUTOFF      = new Date('2026-04-10T23:59:59+08:00');
+  const GOOGLE_FORM = 'https://docs.google.com/forms/d/e/1FAIpQLSeRIcMA7DpMDV-umZDzzumVAlrJopw5RELTocY1VF5MQPQ4WQ/viewform';
+
+  let guests = 2;
+
+  function isEarlyBird() { return new Date() <= CUTOFF; }
+
+  function fmt(n) { return 'HK$' + n.toLocaleString(); }
+
+  function updateAll() {
+    const early = isEarlyBird();
+    const price = early ? EARLY_PRICE : FULL_PRICE;
+    const sub   = price * guests;
+    const svc   = Math.round(sub * 0.1);
+    const total = sub + svc;
+    const tier  = early ? 'Early Bird · 早鳥' : 'Regular · 正價';
+
+    // Guest display
+    document.getElementById('guestNum').textContent = guests;
+    document.getElementById('fguests').value = guests;
+
+    // Calculator
+    document.getElementById('calcPriceLine').textContent = fmt(price) + ' × ' + guests + ' guest' + (guests > 1 ? 's' : '');
+    document.getElementById('calcSub').textContent   = fmt(sub);
+    document.getElementById('calcSvc').textContent   = fmt(svc);
+    document.getElementById('calcTotal').textContent = fmt(total);
+
+    // Form summary
+    document.getElementById('formTotalLabel').textContent = guests + ' guest' + (guests > 1 ? 's' : '') + ' · ' + tier;
+    document.getElementById('formTotalVal').textContent   = fmt(total);
+
+    // Pricing cards
+    const earlyBox = document.getElementById('earlyBox');
+    const fullBox  = document.getElementById('fullBox');
+    const banner   = document.getElementById('statusBanner');
+    const dot      = document.getElementById('statusDot');
+    const txt      = document.getElementById('statusText');
+
+    if (early) {
+      earlyBox.className = 'price-box active';
+      fullBox.className  = 'price-box dimmed';
+      banner.className   = 'status-banner early';
+      dot.className      = 'status-dot green';
+      txt.textContent    = '早鳥優惠進行中 — 4月10日前預訂可享 HK$1,680/位';
+    } else {
+      earlyBox.className = 'price-box dimmed';
+      fullBox.className  = 'price-box active';
+      banner.className   = 'status-banner full';
+      dot.className      = 'status-dot amber';
+      txt.textContent    = '早鳥優惠已截止 — 現適用正價 HK$1,880/位';
+    }
+  }
+
+  function changeGuests(delta) {
+    guests = Math.min(20, Math.max(1, guests + delta));
+    updateAll();
+  }
+
+  // ── MENU TOGGLE ──
+  function toggleMenu() {
+    const body  = document.getElementById('menuBody');
+    const arrow = document.getElementById('menuArrow');
+    body.classList.toggle('open');
+    arrow.classList.toggle('open');
+  }
+
+  // ── UPLOAD ──
+  function handleFile(input) {
+    if (input.files && input.files[0]) {
+      document.getElementById('fileNameText').textContent = input.files[0].name;
+      document.getElementById('fileName').style.display = 'block';
+    }
+  }
+
+  const zone = document.getElementById('uploadZone');
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+  zone.addEventListener('drop', e => {
+    e.preventDefault(); zone.classList.remove('drag-over');
+    const f = e.dataTransfer.files[0];
+    if (f) { document.getElementById('fslip').files = e.dataTransfer.files; document.getElementById('fileNameText').textContent = f.name; document.getElementById('fileName').style.display = 'block'; }
+  });
+
+  // ── SUBMIT → GOOGLE FORM ──
+  function submitForm() {
+    const name   = document.getElementById('fname').value.trim();
+    const mobile = document.getElementById('fmobile').value.trim();
+    const email  = document.getElementById('femail').value.trim();
+    const slip   = document.getElementById('fslip').files[0];
+
+    if (!name)                          { alert('請輸入全名 · Please enter your full name'); return; }
+    if (!mobile)                        { alert('請輸入手提電話 · Please enter your mobile number'); return; }
+    if (!email || !email.includes('@')) { alert('請輸入有效電郵 · Please enter a valid email'); return; }
+    if (!slip)                          { alert('請上傳入數紙 · Please upload your bank-in slip'); return; }
+
+    const early = isEarlyBird();
+    const price = early ? EARLY_PRICE : FULL_PRICE;
+    const sub   = price * guests;
+    const svc   = Math.round(sub * 0.1);
+    const total = sub + svc;
+    const tier  = early ? 'Early Bird HK$1,680' : 'Regular HK$1,880';
+
+    // Open Google Form pre-filled
+    // Note: replace entry.XXXXXXXXX with actual entry IDs from your Google Form
+    const params = new URLSearchParams({
+      'usp': 'pp_url',
+      // Uncomment & replace these with your real entry IDs after checking your form:
+      // 'entry.FULLNAME':  name,
+      // 'entry.MOBILE':    mobile,
+      // 'entry.EMAIL':     email,
+      // 'entry.GUESTS':    guests,
+      // 'entry.TOTAL':     'HK$' + total + ' (' + tier + ')',
+    });
+
+    window.open(GOOGLE_FORM, '_blank');
+
+    document.getElementById('formCard').style.display = 'none';
+    document.getElementById('successScreen').style.display = 'block';
+    window.scrollTo({ top: document.getElementById('successScreen').offsetTop - 40, behavior: 'smooth' });
+  }
+
+  // ── INIT ──
+  updateAll();
+</script>
+</body>
+</html>
