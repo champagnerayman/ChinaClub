@@ -664,23 +664,12 @@
     document.getElementById('spinner').style.display = 'block';
     btn.disabled = true;
 
-    // Read slip as base64 then submit
+    // Read slip as base64 then submit via fetch
     const reader = new FileReader();
     reader.onload = function(ev) {
       const base64 = ev.target.result.split(',')[1];
 
-      var iframe = document.createElement('iframe');
-      iframe.name = 'submit_iframe';
-      iframe.style.display = 'none';
-      document.body.appendChild(iframe);
-
-      var form = document.createElement('form');
-      form.method = 'POST';
-      form.action = SCRIPT_URL;
-      form.target = 'submit_iframe';
-      form.style.display = 'none';
-
-      var fields = {
+      const payload = {
         name: name,
         mobile: mobile,
         email: email,
@@ -691,18 +680,18 @@
         slipName: slip.name
       };
 
-      Object.keys(fields).forEach(function(key) {
-        var inp = document.createElement('input');
-        inp.type = 'hidden'; inp.name = key; inp.value = fields[key];
-        form.appendChild(inp);
-      });
-
-      document.body.appendChild(form);
-      form.submit();
-
-      setTimeout(function() {
+      fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+      .then(function() {
         showThankYou(name, fmt(total), tier);
-      }, 3000);
+      })
+      .catch(function() {
+        showThankYou(name, fmt(total), tier);
+      });
     };
     reader.readAsDataURL(slip);
   }
