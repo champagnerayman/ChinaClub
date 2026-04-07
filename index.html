@@ -664,12 +664,12 @@
     document.getElementById('spinner').style.display = 'block';
     btn.disabled = true;
 
-    // Read slip as base64 then submit via fetch
+    // Read slip as base64 then submit via XMLHttpRequest
     const reader = new FileReader();
     reader.onload = function(ev) {
       const base64 = ev.target.result.split(',')[1];
 
-      const payload = {
+      const payload = JSON.stringify({
         name: name,
         mobile: mobile,
         email: email,
@@ -678,20 +678,20 @@
         tier: tier,
         slipData: base64,
         slipName: slip.name
-      };
-
-      fetch(SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      })
-      .then(function() {
-        showThankYou(name, fmt(total), tier);
-      })
-      .catch(function() {
-        showThankYou(name, fmt(total), tier);
       });
+
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', SCRIPT_URL, true);
+      xhr.setRequestHeader('Content-Type', 'text/plain');
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+          showThankYou(name, fmt(total), tier);
+        }
+      };
+      xhr.onerror = function() {
+        showThankYou(name, fmt(total), tier);
+      };
+      xhr.send(payload);
     };
     reader.readAsDataURL(slip);
   }
