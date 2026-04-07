@@ -664,34 +664,47 @@
     document.getElementById('spinner').style.display = 'block';
     btn.disabled = true;
 
-    // Send via hidden iframe form to bypass CORS
-    var iframe = document.createElement('iframe');
-    iframe.name = 'submit_iframe';
-    iframe.style.display = 'none';
-    document.body.appendChild(iframe);
+    // Read slip as base64 then submit
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      const base64 = ev.target.result.split(',')[1];
 
-    var form = document.createElement('form');
-    form.method = 'POST';
-    form.action = SCRIPT_URL;
-    form.target = 'submit_iframe';
-    form.style.display = 'none';
+      var iframe = document.createElement('iframe');
+      iframe.name = 'submit_iframe';
+      iframe.style.display = 'none';
+      document.body.appendChild(iframe);
 
-    var fields = {
-      name: name, mobile: mobile, email: email,
-      guests: String(guests), total: fmt(total), tier: tier
+      var form = document.createElement('form');
+      form.method = 'POST';
+      form.action = SCRIPT_URL;
+      form.target = 'submit_iframe';
+      form.style.display = 'none';
+
+      var fields = {
+        name: name,
+        mobile: mobile,
+        email: email,
+        guests: String(guests),
+        total: fmt(total),
+        tier: tier,
+        slipData: base64,
+        slipName: slip.name
+      };
+
+      Object.keys(fields).forEach(function(key) {
+        var inp = document.createElement('input');
+        inp.type = 'hidden'; inp.name = key; inp.value = fields[key];
+        form.appendChild(inp);
+      });
+
+      document.body.appendChild(form);
+      form.submit();
+
+      setTimeout(function() {
+        showThankYou(name, fmt(total), tier);
+      }, 3000);
     };
-    Object.keys(fields).forEach(function(key) {
-      var inp = document.createElement('input');
-      inp.type = 'hidden'; inp.name = key; inp.value = fields[key];
-      form.appendChild(inp);
-    });
-
-    document.body.appendChild(form);
-    form.submit();
-
-    setTimeout(function() {
-      showThankYou(name, fmt(total), tier);
-    }, 2000);
+    reader.readAsDataURL(slip);
   }
 
   updateAll();
