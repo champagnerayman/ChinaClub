@@ -35,8 +35,25 @@
     min-height: 100vh;
   }
 
+  /* ── VIDEO BANNER ── */
+  .video-banner {
+    width: 100%;
+    max-width: 680px;
+    margin: 0 auto;
+    border-radius: 0 0 10px 10px;
+    overflow: hidden;
+    border: 1px solid rgba(201,168,76,0.25);
+    border-top: none;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.7);
+    animation: fadeUp 1s ease both;
+  }
+  .video-banner video {
+    width: 100%;
+    display: block;
+  }
+
   /* ── LAYOUT ── */
-  .page { max-width: 680px; margin: 0 auto; padding: 48px 20px 64px; }
+  .page { max-width: 680px; margin: 0 auto; padding: 36px 20px 64px; }
 
   /* ── ANIMATIONS ── */
   @keyframes fadeUp {
@@ -562,6 +579,13 @@
 </style>
 </head>
 <body>
+<!-- VIDEO BANNER -->
+<div class="video-banner">
+  <video autoplay muted loop playsinline>
+    <source src="mbaalumini.mp4" type="video/mp4">
+  </video>
+</div>
+
 <div class="page">
 
   <!-- HERO -->
